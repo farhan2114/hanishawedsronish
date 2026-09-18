@@ -16,9 +16,9 @@ export const ParallaxSection: React.FC = () => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         '.parallax-img',
-        { yPercent: -8, scale: 1.15 },
+        { yPercent: -6, scale: 1.15 },
         {
-          yPercent: 8,
+          yPercent: 6,
           scale: 1.15,
           ease: 'none',
           scrollTrigger: {
@@ -35,18 +35,19 @@ export const ParallaxSection: React.FC = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative h-[58vh] overflow-hidden bg-[#24080e] sm:h-[75vh]">
+    <div ref={containerRef} className="relative h-[62vh] min-h-[440px] overflow-hidden bg-[#24080e] sm:h-[75vh]">
       <img
         src={banner.image}
         alt={banner.alt}
         loading="lazy"
         width={1200}
         height={1500}
-        className="parallax-img absolute -top-[15%] left-0 h-[130%] w-full object-cover will-change-transform"
+        className="parallax-img absolute -top-[12%] left-0 h-[125%] w-full object-cover object-[72%_20%] sm:object-center will-change-transform"
       />
-      <div className="absolute inset-0 bg-[color-mix(in_oklab,var(--maroon)_28%,transparent)]" />
-      <div className="absolute inset-0 flex items-center justify-center px-6">
-        <p className="max-w-2xl text-center font-display text-3xl leading-snug text-paper sm:text-5xl">
+      {/* Dynamic gradient overlay: on mobile, rises from the bottom so the couple stays visible on top and text is crystal clear */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#24080e] via-[#24080e]/40 to-transparent sm:bg-[color-mix(in_oklab,var(--maroon)_28%,transparent)]" />
+      <div className="absolute inset-0 flex items-end justify-center px-6 pb-10 sm:items-center sm:pb-0">
+        <p className="max-w-2xl text-center font-display text-2xl leading-relaxed text-paper sm:text-5xl">
           {banner.quote}
         </p>
       </div>
