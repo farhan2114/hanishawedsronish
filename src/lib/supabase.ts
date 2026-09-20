@@ -27,7 +27,7 @@ const defaultSeedBlessings: BlessingItem[] = [
     id: 'seed-2',
     name: 'Lakshmi Auntie',
     city: 'Madurai',
-    message: 'May Lord Sundareswarar shower His divine blessings upon Aarthi and Nikhil on this beautiful beginning.',
+    message: 'Wishing Hanisha and Ronish a lifetime of love, joy, and togetherness. Congratulations!',
     created_at: new Date().toISOString(),
   },
   {

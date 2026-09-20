@@ -67,10 +67,10 @@ the union of two hearts`,
   // 4. VENUE & GOOGLE MAPS
   // -------------------------------------------------------------
   venue: {
-    name: 'Ranch Retreat',
+    name: 'Irahs FarmRanch Retreat',
     city: 'Van Alstyne, Texas, USA',
     cityName: 'Van Alstyne', // Displayed in "Join us in [City]"
-    description: 'Follow the golden path to Ranch Retreat, where our families will be waiting to welcome you.',
+    description: 'Follow the golden path to Irahrs Farm Ranch Retreat, where our families will be waiting to welcome you.',
     
     // Google Maps direct search link (opened when user clicks "Open in maps")
     mapsSearchUrl: 'https://maps.app.goo.gl/3sBB4THXXaL5fcxy5',
@@ -108,7 +108,7 @@ the union of two hearts`,
       name: 'Wedding Ceremony',
       day: 'Saturday, 28 Nov',
       time: '5:07 PM CST',
-      place: 'Ranch Retreat',
+      place: 'Irahs FarmRanch Retreat',
       note: 'Wedding ceremony and celebrations',
     },
   ],
