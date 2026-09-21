@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { weddingConfig } from "../wedding.config";
 import { Ornament, SpinningMandala } from "./Ornaments";
 import { RevealOnScroll } from "./RevealOnScroll";
+import { saveRsvp } from "../lib/supabase";
 
 type AttendanceMap = Record<string, "attending" | "declining" | null>;
 
@@ -26,6 +27,7 @@ export const RsvpSection: React.FC = () => {
     Object.fromEntries(events.map((e) => [e.name, null]))
   );
   const [note, setNote] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState<RsvpData | null>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -43,7 +45,7 @@ export const RsvpSection: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
@@ -61,6 +63,16 @@ export const RsvpSection: React.FC = () => {
       return;
     }
 
+    const attendingList = events
+      .filter((ev) => attendance[ev.name] === "attending")
+      .map((ev) => ev.name)
+      .join(", ");
+
+    const declinedList = events
+      .filter((ev) => attendance[ev.name] === "declining")
+      .map((ev) => ev.name)
+      .join(", ");
+
     const data: RsvpData = {
       name: name.trim(),
       contact: contact.trim(),
@@ -69,6 +81,26 @@ export const RsvpSection: React.FC = () => {
       note: note.trim(),
       submittedAt: new Date().toISOString(),
     };
+
+    const sangeetStatus = attendance["Sangeet"] === "attending" ? "Yes" : "No";
+    const haldiStatus = attendance["Haldi"] === "attending" ? "Yes" : "No";
+    const pellikodukuStatus = attendance["Pellikoduku & Pellikuthuru"] === "attending" ? "Yes" : "No";
+    const weddingStatus = attendance["Wedding Ceremony"] === "attending" ? "Yes" : "No";
+
+    setIsSubmitting(true);
+    await saveRsvp({
+      name: data.name,
+      email: data.contact,
+      guest_count: data.guestCount,
+      attending_events: attendingList || "None",
+      declined_events: declinedList || "None",
+      sangeet: sangeetStatus,
+      haldi: haldiStatus,
+      pellikoduku: pellikodukuStatus,
+      wedding: weddingStatus,
+      note: data.note || "",
+    });
+    setIsSubmitting(false);
 
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -276,9 +308,10 @@ export const RsvpSection: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="mt-9 w-full border border-gold/60 py-4 text-[0.7rem] uppercase tracking-[0.3em] text-gold-deep transition-colors hover:bg-gold/10"
+                  disabled={isSubmitting}
+                  className="mt-9 w-full border border-gold/60 py-4 text-[0.7rem] uppercase tracking-[0.3em] text-gold-deep transition-colors hover:bg-gold/10 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Submit RSVP
+                  {isSubmitting ? "Submitting RSVP..." : "Submit RSVP"}
                 </button>
               </form>
             </RevealOnScroll>
