@@ -87,7 +87,7 @@ the union of two hearts`,
       name: 'Sangeet',
       day: 'Thursday, 26 Nov',
       time: '7:00 PM CST',
-      place: 'Ranch Retreat,Irahs Farm',
+      place: 'Ranch Retreat, Irahs Farm',
       note: 'Music and a lot of dancing',
     },
     {
