@@ -30,12 +30,12 @@ export const weddingConfig = {
     hashtag: '#HanishaWedsRonish',
 
     brideRole: 'The bride',
-    brideParentsNote: 'Daughter of Mr. Pidikiti Venkatesulu & Mrs. Pidikiti Pushpalatha, Madurai.',
+    brideParentsNote: 'Daughter of Mr. Pidikiti Venkatesulu & Mrs. Pidikiti Pushpalatha, Guntakal.',
     bridePhoto: '/client-images/bride.jpg',
     bridePhotoAlt: 'Hanisha, the bride',
 
     groomRole: 'The groom',
-    groomParentsNote: 'Son of Mr. Gottipati Venkata Rao & Mrs. Gottipati Hymavathi, Chennai.',
+    groomParentsNote: 'Son of Mr. Gottipati Venkata Rao & Mrs. Gottipati Hymavathi, Guntur.',
     groomPhoto: '/client-images/groom.jpg',
     groomPhotoAlt: 'Ronish, the groom',
   },
@@ -68,7 +68,7 @@ the union of two hearts`,
   // -------------------------------------------------------------
   venue: {
     name: 'Ranch Retreat, Irahs Farm',
-    city: 'Irahs Farm, Texas, USA',
+    city: 'Van Alstyne, Texas, USA',
     cityName: 'Van Alstyne', // Displayed in "Join us in [City]"
     description: 'Follow the golden path to Ranch Retreat, Irahs Farm, where our families will be waiting to welcome you.',
     
