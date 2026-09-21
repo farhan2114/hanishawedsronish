@@ -68,9 +68,9 @@ the union of two hearts`,
   // -------------------------------------------------------------
   venue: {
     name: 'Ranch Retreat, Irahs Farm',
-    city: 'Van Alstyne, Texas, USA',
-    cityName: 'Irahs Farm', // Displayed in "Join us in [City]"
-    description: 'Follow the golden path to Ranch Retreat, Irahrs Farm, where our families will be waiting to welcome you.',
+    city: 'Irahs Farm, Texas, USA',
+    cityName: 'Van Alstyne', // Displayed in "Join us in [City]"
+    description: 'Follow the golden path to Ranch Retreat, Irahs Farm, where our families will be waiting to welcome you.',
     
     // Google Maps direct search link (opened when user clicks "Open in maps")
     mapsSearchUrl: 'https://maps.app.goo.gl/3sBB4THXXaL5fcxy5',
