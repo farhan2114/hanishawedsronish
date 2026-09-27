@@ -119,14 +119,23 @@ export const HeroSection: React.FC = () => {
 
   /* ── Video ends or user skips ── */
   const handleVideoEnd = useCallback(() => {
-    if (videoOver) return;
+    if (videoOver || fading) return;
     setFading(true);
+    playAudio();
+    tlRef.current?.play();
     setTimeout(() => {
       setVideoOver(true);
-      playAudio();
-      tlRef.current?.play();
-    }, 650);
-  }, [videoOver]);
+    }, 1100);
+  }, [videoOver, fading]);
+
+  /* ── Smoothly trigger fadeout right before video ends to prevent freeze-frames ── */
+  const handleTimeUpdate = useCallback(() => {
+    const vid = videoRef.current;
+    if (!vid || fading || videoOver) return;
+    if (vid.duration && vid.duration > 2 && vid.currentTime >= vid.duration - 0.8) {
+      handleVideoEnd();
+    }
+  }, [fading, videoOver, handleVideoEnd]);
 
   return (
     <section
@@ -206,8 +215,13 @@ export const HeroSection: React.FC = () => {
       {/* ── Intro Overlay ── */}
       {!videoOver && (
         <div
-          className="fixed inset-0 z-[200] overflow-hidden bg-black transition-opacity duration-700"
-          style={{ opacity: fading ? 0 : 1, pointerEvents: fading ? "none" : "auto" }}
+          className="fixed inset-0 z-[200] overflow-hidden bg-black transition-all duration-1000 ease-out"
+          style={{
+            opacity: fading ? 0 : 1,
+            transform: fading ? "scale(1.04)" : "scale(1)",
+            filter: fading ? "blur(6px)" : "blur(0px)",
+            pointerEvents: fading ? "none" : "auto",
+          }}
         >
           {/* Instant First-Frame Poster (renders 0ms without waiting for video decoding) */}
           <img
@@ -225,6 +239,7 @@ export const HeroSection: React.FC = () => {
             muted
             playsInline
             preload="auto"
+            onTimeUpdate={handleTimeUpdate}
             onEnded={handleVideoEnd}
             className="absolute inset-0 h-full w-full object-cover object-center"
             style={{ transform: "translateZ(0)", WebkitBackfaceVisibility: "hidden", backfaceVisibility: "hidden" }}
