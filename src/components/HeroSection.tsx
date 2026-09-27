@@ -23,21 +23,13 @@ export const HeroSection: React.FC = () => {
   const [videoOver,setVideoOver] = useState(false);
   const [fading,   setFading]    = useState(false);
 
-  /* ── Seek to first frame on mount so background shows video still ── */
+  /* ── Configure video element for iOS Safari on mount ── */
   useEffect(() => {
     const vid = videoRef.current;
     if (!vid) return;
-    const onLoad = () => { vid.currentTime = 0.001; };
-    vid.addEventListener("loadedmetadata", onLoad);
-    return () => vid.removeEventListener("loadedmetadata", onLoad);
+    vid.muted = true;
+    vid.defaultMuted = true;
   }, []);
-
-  /* ── When started, play the video ── */
-  useEffect(() => {
-    if (started && videoRef.current) {
-      videoRef.current.play().catch(() => {});
-    }
-  }, [started]);
 
   /* ── Lock scroll until invitation revealed ── */
   useEffect(() => {
@@ -137,6 +129,23 @@ export const HeroSection: React.FC = () => {
     }
   }, [fading, videoOver, handleVideoEnd]);
 
+  /* ── Direct user-gesture playback for Safari iOS compatibility ── */
+  const handleStart = useCallback(() => {
+    setStarted(true);
+    const vid = videoRef.current;
+    if (vid) {
+      vid.muted = true;
+      vid.defaultMuted = true;
+      const playPromise = vid.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          console.warn("Safari playback restricted:", err);
+          handleVideoEnd();
+        });
+      }
+    }
+  }, [handleVideoEnd]);
+
   return (
     <section
       ref={sectionRef}
@@ -231,79 +240,86 @@ export const HeroSection: React.FC = () => {
             className="absolute inset-0 h-full w-full object-cover object-center pointer-events-none"
           />
 
-          {/* Video — with poster attribute for seamless native playback */}
+          {/* Video — with Safari webkit-playsinline and muted attributes */}
           <video
             ref={videoRef}
             src={weddingData.introVideo || "/client-images/intro.mp4"}
             poster="/client-images/intro-poster.jpg"
             muted
             playsInline
+            autoPlay={false}
             preload="auto"
+            disablePictureInPicture
+            disableRemotePlayback
             onTimeUpdate={handleTimeUpdate}
             onEnded={handleVideoEnd}
             className="absolute inset-0 h-full w-full object-cover object-center"
             style={{ transform: "translateZ(0)", WebkitBackfaceVisibility: "hidden", backfaceVisibility: "hidden" }}
           />
 
-          {/* Card overlay on top of frozen first frame — disappears on tap */}
-          {!started && (
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[1px] px-4">
-              <div className="paper-card arch-top relative flex flex-col items-center px-6 py-9 text-center sm:px-14 sm:py-14 w-[76%] max-w-[285px] sm:max-w-sm">
-                {/* Mandala: spins centered above card */}
-                <div className="pointer-events-none absolute -top-11 sm:-top-14 left-1/2 -translate-x-1/2">
-                  <img
-                    src={assets.mandalaGold}
-                    alt=""
-                    aria-hidden="true"
-                    className="w-20 sm:w-28"
-                    style={{ animation: "mandalaSpin 14s linear infinite" }}
-                  />
-                </div>
-
-                {/* Date */}
-                <p className="eyebrow mt-5 sm:mt-6 text-[0.6rem] sm:text-[0.62rem]">{weddingData.dateShort}</p>
-
-                {/* Names */}
-                <h2 className="mt-3 sm:mt-4 flex flex-wrap items-center justify-center gap-x-1.5 font-display text-2xl min-[360px]:text-3xl sm:text-5xl leading-tight">
-                  <span className="text-gold-foil animate-foil">{weddingData.bride}</span>
-                  <span className="font-title text-base sm:text-lg text-maroon sm:text-2xl">&amp;</span>
-                  <span className="text-gold-foil animate-foil">{weddingData.groom}</span>
-                </h2>
-
-                {/* Divider */}
-                <div className="rule-gold mx-auto my-5 sm:my-7 w-24 sm:w-32 opacity-70" />
-
-                {/* Tap to begin */}
-                <button
-                  type="button"
-                  onClick={() => setStarted(true)}
-                  aria-label="Tap to open the invitation"
-                  className="group relative overflow-hidden rounded-full border border-gold/60 bg-transparent px-7 py-3 sm:px-9 sm:py-3.5 transition-all hover:border-gold hover:bg-gold/10 active:scale-95"
-                >
-                  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-gold/15 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-                  <span className="relative font-title text-[0.68rem] sm:text-[0.7rem] uppercase tracking-[0.34em] sm:tracking-[0.38em] text-gold-deep">
-                    Open Invitation
-                  </span>
-                </button>
-
-                <p className="mt-4 sm:mt-5 text-[0.55rem] sm:text-[0.58rem] uppercase tracking-[0.2em] sm:tracking-[0.22em] text-muted-foreground">
-                  Music will play softly
-                </p>
+          {/* Card overlay on top of frozen first frame — smoothly fades on tap without GPU flicker */}
+          <div
+            className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[1px] px-4 transition-opacity duration-500 ease-out"
+            style={{
+              opacity: started ? 0 : 1,
+              pointerEvents: started ? "none" : "auto",
+            }}
+          >
+            <div className="paper-card arch-top relative flex flex-col items-center px-6 py-9 text-center sm:px-14 sm:py-14 w-[76%] max-w-[285px] sm:max-w-sm">
+              {/* Mandala: spins centered above card */}
+              <div className="pointer-events-none absolute -top-11 sm:-top-14 left-1/2 -translate-x-1/2">
+                <img
+                  src={assets.mandalaGold}
+                  alt=""
+                  aria-hidden="true"
+                  className="w-20 sm:w-28"
+                  style={{ animation: "mandalaSpin 14s linear infinite" }}
+                />
               </div>
+
+              {/* Date */}
+              <p className="eyebrow mt-5 sm:mt-6 text-[0.6rem] sm:text-[0.62rem]">{weddingData.dateShort}</p>
+
+              {/* Names */}
+              <h2 className="mt-3 sm:mt-4 flex flex-wrap items-center justify-center gap-x-1.5 font-display text-2xl min-[360px]:text-3xl sm:text-5xl leading-tight">
+                <span className="text-gold-foil animate-foil">{weddingData.bride}</span>
+                <span className="font-title text-base sm:text-lg text-maroon sm:text-2xl">&amp;</span>
+                <span className="text-gold-foil animate-foil">{weddingData.groom}</span>
+              </h2>
+
+              {/* Divider */}
+              <div className="rule-gold mx-auto my-5 sm:my-7 w-24 sm:w-32 opacity-70" />
+
+              {/* Tap to begin */}
+              <button
+                type="button"
+                onClick={handleStart}
+                aria-label="Tap to open the invitation"
+                className="group relative overflow-hidden rounded-full border border-gold/60 bg-transparent px-7 py-3 sm:px-9 sm:py-3.5 transition-all hover:border-gold hover:bg-gold/10 active:scale-95"
+              >
+                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-gold/15 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                <span className="relative font-title text-[0.68rem] sm:text-[0.7rem] uppercase tracking-[0.34em] sm:tracking-[0.38em] text-gold-deep">
+                  Open Invitation
+                </span>
+              </button>
+
+              <p className="mt-4 sm:mt-5 text-[0.55rem] sm:text-[0.58rem] uppercase tracking-[0.2em] sm:tracking-[0.22em] text-muted-foreground">
+                Music will play softly
+              </p>
             </div>
-          )}
+          </div>
 
           {/* Skip button — only after video starts */}
-          {started && (
-            <button
-              type="button"
-              onClick={handleVideoEnd}
-              aria-label="Skip intro"
-              className="absolute bottom-6 right-5 z-20 rounded-full border border-gold/50 bg-black/60 px-5 py-2.5 font-title text-[0.68rem] uppercase tracking-[0.25em] text-paper backdrop-blur-md transition-colors hover:bg-black/80 sm:bottom-10 sm:right-10"
-            >
-              Skip intro
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={handleVideoEnd}
+            aria-label="Skip intro"
+            className={`absolute bottom-6 right-5 z-20 rounded-full border border-gold/50 bg-black/60 px-5 py-2.5 font-title text-[0.68rem] uppercase tracking-[0.25em] text-paper backdrop-blur-md transition-all duration-500 hover:bg-black/80 sm:bottom-10 sm:right-10 ${
+              started ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+            }`}
+          >
+            Skip intro
+          </button>
         </div>
       )}
     </section>
