@@ -31,13 +31,18 @@ export const weddingConfig = {
 
     brideRole: 'The bride',
     brideParentsNote: 'Daughter of Mr. Pidikiti Venkatesulu & Mrs. Pidikiti Pushpalatha, Guntakal.',
+    brideDescription: 'A soul of graceful warmth and radiant joy, her laughter lights up every room she enters. With a generous heart and spirited smile, she steps into this new chapter with boundless love, poise, and devotion to family.',
     bridePhoto: '/client-images/bride.jpg',
     bridePhotoAlt: 'Hanisha, the bride',
 
     groomRole: 'The groom',
     groomParentsNote: 'Son of Mr. Gottipati Venkata Rao & Mrs. Gottipati Hymavathi, Guntur.',
+    groomDescription: 'A gentleman of steadfast character, quiet strength, and genuine kindness. Grounded in wisdom and guided by warmth, his caring nature and unwavering dedication make him the perfect companion and partner for life.',
     groomPhoto: '/client-images/groom.jpg',
     groomPhotoAlt: 'Ronish, the groom',
+
+    couplePhoto: '/client-images/couple.jpg',
+    couplePhotoAlt: 'Hanisha and Ronish, the couple',
   },
 
   // -------------------------------------------------------------
