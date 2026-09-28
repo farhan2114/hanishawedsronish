@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import gsap from "gsap";
 import { assets } from "../data/assets";
 import { weddingData } from "../data/weddingData";
-import { playAudio } from "../lib/audio";
+import { playAudio, primeAudio } from "../lib/audio";
 
 const paperCards = [
   { x: -320, y: 180,  r: -24, w: 120, h: 158 },
@@ -132,6 +132,7 @@ export const HeroSection: React.FC = () => {
   /* ── Direct user-gesture playback for Safari iOS compatibility ── */
   const handleStart = useCallback(() => {
     setStarted(true);
+    primeAudio(); // Primes and unlocks audio element within direct user tap on iOS Safari
     const vid = videoRef.current;
     if (vid) {
       vid.muted = true;
