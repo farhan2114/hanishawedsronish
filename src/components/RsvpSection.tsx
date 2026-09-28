@@ -17,6 +17,14 @@ interface RsvpData {
 
 const STORAGE_KEY = "rsvp_submission";
 
+interface EditingData {
+  originalName: string;
+  originalEmail: string;
+  originalAttendance: AttendanceMap;
+  originalGuestCount: number;
+  originalNote: string;
+}
+
 export const RsvpSection: React.FC = () => {
   const { couple, events } = weddingConfig;
 
@@ -28,6 +36,7 @@ export const RsvpSection: React.FC = () => {
   );
   const [note, setNote] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [editingData, setEditingData] = useState<EditingData | null>(null);
   const [submitted, setSubmitted] = useState<RsvpData | null>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -87,8 +96,12 @@ export const RsvpSection: React.FC = () => {
     const pellikodukuStatus = attendance["Pellikoduku & Pellikuthuru"] === "attending" ? "Yes" : "No";
     const weddingStatus = attendance["Wedding Ceremony"] === "attending" ? "Yes" : "No";
 
+    const isUpdate = Boolean(editingData || submitted);
+    const originalName = editingData?.originalName || submitted?.name || name.trim();
+    const originalEmail = editingData?.originalEmail || submitted?.contact || contact.trim();
+
     setIsSubmitting(true);
-    await saveRsvp({
+    const result = await saveRsvp({
       name: data.name,
       email: data.contact,
       guest_count: data.guestCount,
@@ -99,8 +112,16 @@ export const RsvpSection: React.FC = () => {
       pellikoduku: pellikodukuStatus,
       wedding: weddingStatus,
       note: data.note || "",
+      is_update: isUpdate,
+      original_name: originalName,
+      original_email: originalEmail,
     });
     setIsSubmitting(false);
+
+    if (!result.success) {
+      setError(result.error || "Could not save your RSVP. Please check your connection and try again.");
+      return;
+    }
 
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -108,18 +129,25 @@ export const RsvpSection: React.FC = () => {
       // ignore storage errors
     }
 
+    setEditingData(null);
     setSubmitted(data);
   };
 
   const handleEditRsvp = () => {
     if (!submitted) return;
+    setEditingData({
+      originalName: submitted.name,
+      originalEmail: submitted.contact,
+      originalAttendance: submitted.attendance,
+      originalGuestCount: submitted.guestCount,
+      originalNote: submitted.note,
+    });
     setName(submitted.name);
     setContact(submitted.contact);
     setGuestCount(submitted.guestCount);
     setAttendance(submitted.attendance);
     setNote(submitted.note);
     setSubmitted(null);
-    localStorage.removeItem(STORAGE_KEY);
   };
 
   const inputClass =
@@ -201,6 +229,32 @@ export const RsvpSection: React.FC = () => {
                 onSubmit={handleSubmit}
                 className="paper-card mx-auto max-w-2xl px-7 py-10 sm:px-12 sm:py-14"
               >
+                {editingData && (
+                  <div className="mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 rounded border border-gold/40 bg-gold/10 px-4 py-3 text-xs text-foreground">
+                    <div>
+                      <span className="font-semibold text-gold-deep">Editing RSVP for:</span>{" "}
+                      <span className="font-title">{editingData.originalName}</span> ({editingData.originalEmail})
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSubmitted({
+                          name: editingData.originalName,
+                          contact: editingData.originalEmail,
+                          guestCount: editingData.originalGuestCount,
+                          attendance: editingData.originalAttendance,
+                          note: editingData.originalNote,
+                          submittedAt: new Date().toISOString(),
+                        });
+                        setEditingData(null);
+                      }}
+                      className="text-[0.65rem] uppercase tracking-wider text-muted-foreground underline hover:text-foreground"
+                    >
+                      Cancel &amp; Keep RSVP
+                    </button>
+                  </div>
+                )}
+
                 <div className="grid gap-6 sm:grid-cols-2">
                   <input
                     className={inputClass}
@@ -267,7 +321,7 @@ export const RsvpSection: React.FC = () => {
                               onClick={() => toggleAttendance(ev.name, "attending")}
                               className={`px-4 py-1.5 text-[0.65rem] uppercase tracking-[0.2em] border transition-colors ${
                                 attendance[ev.name] === "attending"
-                                  ? "bg-gold/20 border-gold text-gold-deep font-semibold"
+                                    ? "bg-gold/20 border-gold text-gold-deep font-semibold"
                                   : "border-gold/30 text-muted-foreground hover:border-gold/60"
                               }`}
                             >
@@ -311,7 +365,9 @@ export const RsvpSection: React.FC = () => {
                   disabled={isSubmitting}
                   className="mt-9 w-full border border-gold/60 py-4 text-[0.7rem] uppercase tracking-[0.3em] text-gold-deep transition-colors hover:bg-gold/10 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? "Submitting RSVP..." : "Submit RSVP"}
+                  {isSubmitting
+                    ? (editingData ? "Updating RSVP..." : "Submitting RSVP...")
+                    : (editingData ? "Update RSVP" : "Submit RSVP")}
                 </button>
               </form>
             </RevealOnScroll>

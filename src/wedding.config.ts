@@ -199,6 +199,13 @@ the union of two hearts`,
     src: '/client-images/music.mp3',
     volume: 0.45,
   },
+
+  // -------------------------------------------------------------
+  // 11. GOOGLE SHEET RSVP WEBHOOK
+  // -------------------------------------------------------------
+  rsvp: {
+    googleSheetWebhookUrl: 'https://script.google.com/macros/s/AKfycbwLV_52cSrJPWpsMfFJrY4xZ-3iCV8WPR5612i-v9qB_koaaX1u6QfOU3tq5fDLq1b-Mg/exec',
+  },
 };
 
 // Backwards-compatible export for existing components

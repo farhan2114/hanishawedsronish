@@ -13,7 +13,11 @@ const SUPABASE_KEY = 'sb_publishable_7USKYo1sBAT7p3_kqWdrqg_RCxNm3yd';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-export const GOOGLE_SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwLV_52cSrJPWpsMfFJrY4xZ-3iCV8WPR5612i-v9qB_koaaX1u6QfOU3tq5fDLq1b-Mg/exec';
+import { weddingConfig } from '../wedding.config';
+
+export const GOOGLE_SHEET_WEBHOOK_URL =
+  weddingConfig.rsvp?.googleSheetWebhookUrl ||
+  'https://script.google.com/macros/s/AKfycbwLV_52cSrJPWpsMfFJrY4xZ-3iCV8WPR5612i-v9qB_koaaX1u6QfOU3tq5fDLq1b-Mg/exec';
 
 export interface RsvpPayload {
   name: string;
@@ -26,10 +30,40 @@ export interface RsvpPayload {
   pellikoduku?: "Yes" | "No";
   wedding?: "Yes" | "No";
   note: string;
+  is_update?: boolean;
+  original_name?: string;
+  original_email?: string;
 }
 
 export async function saveRsvpToSupabase(payload: RsvpPayload): Promise<{ success: boolean; error?: string }> {
   try {
+    if (payload.is_update) {
+      const searchEmail = payload.original_email || payload.email;
+      const { data: existingRows } = await supabase
+        .from('rsvps')
+        .select('id')
+        .eq('email', searchEmail)
+        .limit(1);
+
+      if (existingRows && existingRows.length > 0) {
+        const { error: updateError } = await supabase
+          .from('rsvps')
+          .update({
+            name: payload.name,
+            email: payload.email,
+            guest_count: payload.guest_count,
+            attending_events: payload.attending_events,
+            declined_events: payload.declined_events,
+            note: payload.note,
+          })
+          .eq('id', existingRows[0].id);
+
+        if (!updateError) {
+          return { success: true };
+        }
+      }
+    }
+
     const { error } = await supabase.from('rsvps').insert([{
       name: payload.name,
       email: payload.email,
@@ -51,6 +85,12 @@ export async function saveRsvpToSupabase(payload: RsvpPayload): Promise<{ succes
 
 export async function saveRsvpToGoogleSheet(payload: RsvpPayload): Promise<void> {
   try {
+    const formattedTimestamp = new Date().toLocaleString('en-US', {
+      timeZone: 'America/Chicago',
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    });
+
     await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
       method: 'POST',
       mode: 'no-cors',
@@ -58,14 +98,23 @@ export async function saveRsvpToGoogleSheet(payload: RsvpPayload): Promise<void>
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        timestamp: formattedTimestamp,
+        is_update: !!payload.is_update,
+        original_email: payload.original_email || payload.email || '',
+        original_name: payload.original_name || payload.name || '',
         name: payload.name,
         email: payload.email,
+        contact: payload.email,
         guest_count: payload.guest_count,
+        total_guests: payload.guest_count,
         sangeet: payload.sangeet || 'No',
         haldi: payload.haldi || 'No',
         pellikoduku: payload.pellikoduku || 'No',
         wedding: payload.wedding || 'No',
+        attending_events: payload.attending_events,
+        declined_events: payload.declined_events,
         note: payload.note || '-',
+        warm_wishes: payload.note || '-',
       }),
     });
   } catch (err) {
