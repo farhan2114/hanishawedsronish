@@ -339,7 +339,7 @@ export const HeroSection: React.FC = () => {
             }
           }}
           aria-label="Scroll down to invitation details"
-          className="group absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-1.5 cursor-pointer focus:outline-none transition-transform duration-300 hover:scale-105"
+          className="group absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 translate-x-[calc(-50%+14px)] md:translate-x-[calc(-50%+18px)] z-30 flex flex-col items-center gap-1.5 cursor-pointer focus:outline-none transition-transform duration-300 hover:scale-105"
         >
           <span className="font-title text-sm sm:text-base md:text-[1.05rem] uppercase tracking-[0.25em] text-[#4A1521] font-bold -mr-[0.25em] select-none text-center animate-scroll-blink">
             Scroll Down
