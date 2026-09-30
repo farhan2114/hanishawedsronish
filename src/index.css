@@ -141,3 +141,21 @@ html.doors-locked {
   display: block;
 }
 
+@keyframes scroll-blink {
+  0%, 100% {
+    opacity: 1;
+    filter: drop-shadow(0 1px 3px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 10px rgba(218, 165, 32, 0.65));
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.35;
+    filter: drop-shadow(0 1px 1px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 2px rgba(218, 165, 32, 0.2));
+    transform: translateY(1px);
+  }
+}
+
+.animate-scroll-blink {
+  animation: scroll-blink 1.8s ease-in-out infinite;
+}
+
+
