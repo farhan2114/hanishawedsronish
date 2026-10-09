@@ -72,16 +72,16 @@ the union of two hearts`,
   // 4. VENUE & GOOGLE MAPS
   // -------------------------------------------------------------
   venue: {
-    name: 'Ranch Retreat, Irahs Farm',
-    city: 'Van Alstyne, Texas, USA',
-    cityName: 'Van Alstyne', // Displayed in "Join us in [City]"
-    description: 'Follow the golden path to Ranch Retreat, Irahs Farm, where our families will be waiting to welcome you.',
+    name: 'Co Rd 936',
+    city: 'Texas, USA',
+    cityName: 'Texas', // Displayed in "Join us in [City]"
+    description: 'Follow the golden path to Co Rd 936, Texas, where our families will be waiting to welcome you.',
     
     // Google Maps direct search link (opened when user clicks "Open in maps")
-    mapsSearchUrl: 'https://maps.app.goo.gl/3sBB4THXXaL5fcxy5',
+    mapsSearchUrl: 'https://maps.app.goo.gl/vmBLgAnrj9Bhd5Ha9?g_st=ic',
     
     // Google Maps interactive iframe embed link
-    mapsEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3330.468233305497!2d-96.472065!3d33.411035!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864c77007e77c93d%3A0x42445225ea2a1d16!2sRanch%20Retreat!5e0!3m2!1sen!2sin!4v1789674653503!5m2!1sen!2sin',
+    mapsEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d26673.57022014798!2d-96.43565715!3d33.37378!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864c761d34761abb%3A0x15abb1f243ca8bc5!2sCo%20Rd%20936%2C%20Texas!5e0!3m2!1sen!2sus!4v1730000000000!5m2!1sen!2sus',
   },
 
   // -------------------------------------------------------------
@@ -92,7 +92,7 @@ the union of two hearts`,
       name: 'Sangeet',
       day: 'Thursday, 26 Nov',
       time: '7:00 PM CST',
-      place: 'Ranch Retreat, Irahs Farm',
+      place: 'Co Rd 936, Texas',
       note: 'Music and a lot of dancing',
     },
     {
@@ -113,7 +113,7 @@ the union of two hearts`,
       name: 'Wedding Ceremony',
       day: 'Saturday, 28 Nov',
       time: '5:07 PM CST',
-      place: 'Ranch Retreat, Irahs Farm',
+      place: 'Co Rd 936, Texas',
       note: 'Wedding ceremony and celebrations',
     },
   ],
@@ -189,7 +189,7 @@ the union of two hearts`,
   gratitude: {
     eyebrow: 'With gratitude from both families',
     heading: 'Thank you for blessing us',
-    message: 'Your presence, prayers and affection make this beginning complete. We invite you once again to join us at Ranch Retreat, Irahs Farm, Van Alstyne, Texas on Saturday, 28 November 2026.',
+    message: 'Your presence, prayers and affection make this beginning complete. We invite you once again to join us at Co Rd 936, Texas on Saturday, 28 November 2026.',
   },
 
   // -------------------------------------------------------------
