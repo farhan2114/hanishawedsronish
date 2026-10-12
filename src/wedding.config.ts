@@ -76,6 +76,10 @@ the union of two hearts`,
     city: 'Texas, USA',
     cityName: 'Texas', // Displayed in "Join us in [City]"
     description: 'Follow the golden path to Co Rd 936, Texas, where our families will be waiting to welcome you.',
+    eventsHosted: [
+      { name: 'Sangeet', day: 'Thursday, 26 Nov', time: '7:00 PM CST' },
+      { name: 'Wedding Ceremony', day: 'Saturday, 28 Nov', time: '5:07 PM CST' },
+    ],
     
     // Google Maps direct search link (opened when user clicks "Open in maps")
     mapsSearchUrl: 'https://maps.app.goo.gl/vmBLgAnrj9Bhd5Ha9?g_st=ic',
@@ -89,6 +93,10 @@ the union of two hearts`,
     city: 'Van Alstyne, Texas, USA',
     cityName: 'Irahs Farm',
     description: 'Follow the golden path to Ranch Retreat, Irahs Farm, where our families will be waiting to welcome you.',
+    eventsHosted: [
+      { name: 'Haldi', day: 'Friday, 27 Nov', time: '10:00 AM CST' },
+      { name: 'Pellikoduku & Pellikuthuru', day: 'Friday, 27 Nov', time: '7:00 PM CST' },
+    ],
     
     // Google Maps direct search link (opened when user clicks "Open in maps")
     mapsSearchUrl: 'https://maps.app.goo.gl/3sBB4THXXaL5fcxy5',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin } from 'lucide-react';
+import { MapPin, Calendar } from 'lucide-react';
 import { assets } from '../data/assets';
 import { weddingConfig } from '../wedding.config';
 import { RevealOnScroll } from './RevealOnScroll';
@@ -34,6 +34,30 @@ export const VenueSection: React.FC = () => {
             <p className="font-title text-lg">{venue.name}</p>
             <p className="mt-1 text-sm text-paper/70">{venue.city}</p>
           </div>
+
+          {/* Celebrations at this location */}
+          {venue.eventsHosted && venue.eventsHosted.length > 0 && (
+            <div className="mt-7 max-w-md rounded-sm border border-gold/30 bg-black/20 p-4 backdrop-blur-xs">
+              <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-gold">
+                <Calendar className="size-3.5 text-gold" aria-hidden="true" />
+                Celebrations at this location
+              </p>
+              <div className="mt-3 space-y-2">
+                {venue.eventsHosted.map((evt) => (
+                  <div
+                    key={evt.name}
+                    className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-b border-gold/10 pb-2 last:border-b-0 last:pb-0"
+                  >
+                    <span className="font-title text-base text-paper">{evt.name}</span>
+                    <span className="text-xs font-sans tracking-wide text-paper/75">
+                      {evt.day} · {evt.time}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <a
             href={venue.mapsSearchUrl}
             target="_blank"
@@ -59,7 +83,7 @@ export const VenueSection: React.FC = () => {
             <span className="pointer-events-none absolute inset-3 border border-gold/30" />
           </div>
           <p className="mt-4 text-center text-xs uppercase tracking-[0.2em] text-paper/60">
-            {venue.city} · {date.short}
+            {venue.city} · Sangeet &amp; Wedding Ceremony
           </p>
         </RevealOnScroll>
       </div>
@@ -86,6 +110,30 @@ export const VenueSection: React.FC = () => {
                 <p className="font-title text-lg">{secondaryVenue.name}</p>
                 <p className="mt-1 text-sm text-paper/70">{secondaryVenue.city}</p>
               </div>
+
+              {/* Celebrations at this location */}
+              {secondaryVenue.eventsHosted && secondaryVenue.eventsHosted.length > 0 && (
+                <div className="mt-7 max-w-md rounded-sm border border-gold/30 bg-black/20 p-4 backdrop-blur-xs">
+                  <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-gold">
+                    <Calendar className="size-3.5 text-gold" aria-hidden="true" />
+                    Celebrations at this location
+                  </p>
+                  <div className="mt-3 space-y-2">
+                    {secondaryVenue.eventsHosted.map((evt) => (
+                      <div
+                        key={evt.name}
+                        className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-b border-gold/10 pb-2 last:border-b-0 last:pb-0"
+                      >
+                        <span className="font-title text-base text-paper">{evt.name}</span>
+                        <span className="text-xs font-sans tracking-wide text-paper/75">
+                          {evt.day} · {evt.time}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <a
                 href={secondaryVenue.mapsSearchUrl}
                 target="_blank"
@@ -111,7 +159,7 @@ export const VenueSection: React.FC = () => {
                 <span className="pointer-events-none absolute inset-3 border border-gold/30" />
               </div>
               <p className="mt-4 text-center text-xs uppercase tracking-[0.2em] text-paper/60">
-                {secondaryVenue.city} · 27 . 11 . 2026
+                {secondaryVenue.city} · Haldi &amp; Pellikoduku / Pellikuthuru
               </p>
             </RevealOnScroll>
           </div>
