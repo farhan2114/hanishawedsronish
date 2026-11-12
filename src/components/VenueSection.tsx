@@ -83,7 +83,7 @@ export const VenueSection: React.FC = () => {
             <span className="pointer-events-none absolute inset-3 border border-gold/30" />
           </div>
           <p className="mt-4 text-center text-xs uppercase tracking-[0.2em] text-paper/60">
-            {venue.city} · Sangeet &amp; Wedding Ceremony
+            {venue.city} · {venue.eventsHosted.map((evt) => evt.name).join(' & ')}
           </p>
         </RevealOnScroll>
       </div>
@@ -99,9 +99,9 @@ export const VenueSection: React.FC = () => {
 
           <div className="relative mx-auto grid max-w-6xl gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
             <RevealOnScroll>
-              <p className="eyebrow text-gold">Haldi & Pre-Wedding Celebrations</p>
+              <p className="eyebrow text-gold">{secondaryVenue.eyebrow || 'Sangeet Celebration'}</p>
               <h2 className="mt-4 font-display text-5xl leading-none sm:text-6xl">
-                Join us at {secondaryCityName}
+                Join us in {secondaryCityName}
               </h2>
               <p className="mt-6 max-w-md text-sm leading-relaxed text-paper/75">
                 {secondaryVenue.description}
@@ -159,7 +159,7 @@ export const VenueSection: React.FC = () => {
                 <span className="pointer-events-none absolute inset-3 border border-gold/30" />
               </div>
               <p className="mt-4 text-center text-xs uppercase tracking-[0.2em] text-paper/60">
-                {secondaryVenue.city} · Haldi &amp; Pellikoduku / Pellikuthuru
+                {secondaryVenue.city} · {secondaryVenue.eventsHosted.map((evt) => evt.name).join(' & ')}
               </p>
             </RevealOnScroll>
           </div>

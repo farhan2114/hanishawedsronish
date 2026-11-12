@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { MapPin } from 'lucide-react';
 import { assets } from '../data/assets';
 import { weddingData } from '../data/weddingData';
 import { SpinningMandala } from './Ornaments';
@@ -78,6 +79,19 @@ export const EventsSection: React.FC = () => {
                 <div className="rule-gold mx-auto mt-7 w-28" />
                 <p className="mt-7 font-title text-xl sm:text-2xl">{event.time}</p>
                 <p className="mt-2 text-sm text-muted-foreground">{event.place}</p>
+                {event.mapUrl && (
+                  <div className="mt-4">
+                    <a
+                      href={event.mapUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-gold/50 bg-gold/10 px-4 py-1.5 text-[0.68rem] font-medium uppercase tracking-[0.2em] text-gold-deep transition-all hover:bg-gold/20 hover:border-gold hover:scale-105"
+                    >
+                      <MapPin className="size-3 text-gold-deep" aria-hidden="true" />
+                      <span>View on Google Maps</span>
+                    </a>
+                  </div>
+                )}
                 <p className="mx-auto mt-7 max-w-md px-2 text-xs uppercase tracking-[0.2em] text-muted-foreground">
                   {event.note}
                 </p>

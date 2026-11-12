@@ -1,9 +1,10 @@
 import React from 'react';
-import { weddingData } from '../data/weddingData';
+import { weddingConfig, weddingData } from '../wedding.config';
 
 export const Footer: React.FC = () => {
-  const query = `${weddingData.venue} ${weddingData.city}`;
-  const mapsSearchUrl = `https://www.google.com/maps/search/${encodeURIComponent(query)}`;
+  const mapsSearchUrl =
+    weddingConfig.venue.mapsSearchUrl ||
+    `https://www.google.com/maps/search/${encodeURIComponent(`${weddingData.venue} ${weddingData.city}`)}`;
 
   return (
     <footer className="border-t border-gold/30 px-5 py-16 text-center">
