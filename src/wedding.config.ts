@@ -75,7 +75,7 @@ the union of two hearts`,
     name: 'Ranch Retreat, Irahs Farm',
     city: 'Van Alstyne, Texas, USA',
     cityName: 'Van Alstyne', // Displayed in "Join us in [City]"
-    eyebrow: 'The way to the wedding',
+    eyebrow: 'Wedding & Pre-Wedding Celebrations',
     description: 'Follow the golden path to Ranch Retreat, Irahs Farm, Van Alstyne, Texas, where our families will be waiting to welcome you.',
     eventsHosted: [
       { name: 'Haldi', day: 'Friday, 27 Nov', time: '10:00 AM CST' },
