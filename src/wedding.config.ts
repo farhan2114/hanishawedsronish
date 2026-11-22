@@ -124,7 +124,7 @@ the union of two hearts`,
       day: 'Friday, 27 Nov',
       time: '10:00 AM CST',
       place: 'Ranch Retreat, Irahs Farm, Van Alstyne, Texas',
-      note: 'Henna, haldi and a lot of laughter',
+      note: 'Haldi and a lot of laughter',
       mapUrl: 'https://maps.app.goo.gl/3sBB4THXXaL5fcxy5',
     },
     {
